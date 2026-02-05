@@ -4,18 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LPG 市场分析与跟盘 App</title>
-    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="container">
       <header>
-        <h1>LPG 市场分析与跟盘 App</h1>
-        <p>输入行情后，一键计算 PG 与 PP 的内外盘套利结果。</p>
+        <h1>LPG 市场分析与跟盘 App（纯前端一键版）</h1>
+        <p>输入行情后，本地直接计算 PG 与 PP 套利结果（无需后端 API，适合 GitHub Pages）。</p>
       </header>
 
       <section class="card">
         <h2>行情输入（JSON 数组）</h2>
-        <p class="hint">字段：month, PG, FEI, CP, FX, PP（PP 可选，仅用于 PP 套利）</p>
+        <p class="hint">字段：month, PG, FEI, CP, FX, PP</p>
         <textarea id="inputData" rows="10"></textarea>
         <div class="actions">
           <button id="calcPg">计算 PG/FEI 套利</button>
@@ -59,6 +59,6 @@
       </section>
     </main>
 
-    <script src="/static/app.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

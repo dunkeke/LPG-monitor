@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LPG 市场分析与跟盘 App</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>LPG 市场分析与跟盘 App</h1>
+        <p>输入行情后，一键计算 PG 与 PP 的内外盘套利结果。</p>
+      </header>
+
+      <section class="card">
+        <h2>行情输入（JSON 数组）</h2>
+        <p class="hint">字段：month, PG, FEI, CP, FX, PP（PP 可选，仅用于 PP 套利）</p>
+        <textarea id="inputData" rows="10"></textarea>
+        <div class="actions">
+          <button id="calcPg">计算 PG/FEI 套利</button>
+          <button id="calcPp">计算 PP 套利</button>
+        </div>
+        <p id="status" class="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>PG 结果</h2>
+        <div class="table-wrap">
+          <table id="pgTable">
+            <thead>
+              <tr>
+                <th>月份</th>
+                <th>PG/FEI 价差 (USD/t)</th>
+                <th>PG/FEI 套利 (¥/t)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>PP 结果</h2>
+        <div class="table-wrap">
+          <table id="ppTable">
+            <thead>
+              <tr>
+                <th>月份</th>
+                <th>PP/CP 价差 (USD/t)</th>
+                <th>PP/CP 套利 (¥/t)</th>
+                <th>PP/FEI 价差 (USD/t)</th>
+                <th>PP/FEI 套利 (¥/t)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

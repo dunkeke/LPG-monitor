@@ -2,6 +2,13 @@ const inputEl = document.getElementById("inputData");
 const statusEl = document.getElementById("status");
 const pgBody = document.querySelector("#pgTable tbody");
 const ppBody = document.querySelector("#ppTable tbody");
+const summaryEl = document.getElementById("summary");
+const pgThresholdEl = document.getElementById("pgThreshold");
+const ppThresholdEl = document.getElementById("ppThreshold");
+const refreshSecondsEl = document.getElementById("refreshSeconds");
+const toggleAutoBtn = document.getElementById("toggleAuto");
+
+let autoTimer = null;
 
 const DEFAULT_BLPG1 = 77.0;
 const DEFAULT_FACTOR = 1500.0;
@@ -72,42 +79,142 @@ function computePpArbitrage(item, blpg1 = DEFAULT_BLPG1, factor = DEFAULT_FACTOR
   };
 }
 
+function signalFromArb(value, threshold) {
+  if (value >= threshold) {
+    return { label: "套利机会", className: "signal signal-good" };
+  }
+  if (value <= -threshold) {
+    return { label: "反套机会", className: "signal signal-warn" };
+  }
+  return { label: "观望", className: "signal signal-neutral" };
+}
+
 function renderRows(tbody, rows, columns) {
   tbody.innerHTML = "";
   for (const row of rows) {
     const tr = document.createElement("tr");
     for (const key of columns) {
       const td = document.createElement("td");
-      td.textContent = row[key];
+      if (key === "signal") {
+        const span = document.createElement("span");
+        span.className = row.signal.className;
+        span.textContent = row.signal.label;
+        td.appendChild(span);
+      } else {
+        td.textContent = row[key];
+      }
       tr.appendChild(td);
     }
     tbody.appendChild(tr);
   }
 }
 
+function renderSummary(pgRows, ppRows) {
+  summaryEl.innerHTML = "";
+  const pgSignals = pgRows.filter((row) => row.signal.label !== "观望").length;
+  const ppSignals = ppRows.filter((row) => row.signal.label !== "观望").length;
+  const cards = [
+    { title: "PG 机会", value: pgSignals, hint: "套利/反套合计" },
+    { title: "PP 机会", value: ppSignals, hint: "套利/反套合计" },
+    { title: "更新时间", value: new Date().toLocaleTimeString(), hint: "本地时间" }
+  ];
+
+  for (const card of cards) {
+    const div = document.createElement("div");
+    div.className = "summary-card";
+    div.innerHTML = `<strong>${card.title}</strong><span>${card.value}</span><small>${card.hint}</small>`;
+    summaryEl.appendChild(div);
+  }
+}
+
 function runPg() {
   try {
-    setStatus("本地计算中...");
+    setStatus("监控刷新中...");
     const data = parseInput();
-    const result = data.map(computePgArbitrage);
-    renderRows(pgBody, result, ["month", "pg_fei_diff_usd", "pg_fei_arb"]);
-    setStatus(`PG 计算完成，共 ${result.length} 条记录。`);
+    const threshold = Number(pgThresholdEl.value) || 0;
+    const result = data.map((item) => {
+      const row = computePgArbitrage(item);
+      return { ...row, signal: signalFromArb(row.pg_fei_arb, threshold) };
+    });
+    renderRows(pgBody, result, ["month", "pg_fei_diff_usd", "pg_fei_arb", "signal"]);
+    renderSummary(result, []);
+    setStatus(`PG 监控完成，共 ${result.length} 条记录。`);
+    return result;
   } catch (error) {
     setStatus(error.message, true);
+    return [];
   }
 }
 
 function runPp() {
   try {
-    setStatus("本地计算中...");
+    setStatus("监控刷新中...");
     const data = parseInput();
-    const result = data.map((item) => computePpArbitrage(item));
-    renderRows(ppBody, result, ["month", "pp_cp_diff_usd", "pp_cp_arb", "pp_fei_diff_usd", "pp_fei_arb"]);
-    setStatus(`PP 计算完成，共 ${result.length} 条记录。`);
+    const threshold = Number(ppThresholdEl.value) || 0;
+    const result = data.map((item) => {
+      const row = computePpArbitrage(item);
+      const signal = signalFromArb(row.pp_cp_arb, threshold);
+      return { ...row, signal };
+    });
+    renderRows(ppBody, result, [
+      "month",
+      "pp_cp_diff_usd",
+      "pp_cp_arb",
+      "pp_fei_diff_usd",
+      "pp_fei_arb",
+      "signal"
+    ]);
+    renderSummary([], result);
+    setStatus(`PP 监控完成，共 ${result.length} 条记录。`);
+    return result;
   } catch (error) {
     setStatus(error.message, true);
+    return [];
+  }
+}
+
+function runAll() {
+  const pgRows = runPg();
+  const ppRows = runPp();
+  renderSummary(pgRows, ppRows);
+}
+
+function startAuto() {
+  const seconds = Number(refreshSecondsEl.value);
+  if (!seconds || seconds <= 0) {
+    setStatus("自动刷新已关闭。", true);
+    return;
+  }
+  if (autoTimer) {
+    clearInterval(autoTimer);
+  }
+  autoTimer = setInterval(runAll, seconds * 1000);
+  toggleAutoBtn.textContent = "停止自动监控";
+  toggleAutoBtn.classList.remove("secondary");
+  setStatus(`已启用自动监控，每 ${seconds} 秒刷新一次。`);
+}
+
+function stopAuto() {
+  if (autoTimer) {
+    clearInterval(autoTimer);
+    autoTimer = null;
+  }
+  toggleAutoBtn.textContent = "启用自动监控";
+  toggleAutoBtn.classList.add("secondary");
+  setStatus("自动监控已停止。", true);
+}
+
+function toggleAuto() {
+  if (autoTimer) {
+    stopAuto();
+  } else {
+    startAuto();
   }
 }
 
 document.getElementById("calcPg").addEventListener("click", runPg);
 document.getElementById("calcPp").addEventListener("click", runPp);
+document.getElementById("calcAll").addEventListener("click", runAll);
+toggleAutoBtn.addEventListener("click", toggleAuto);
+
+runAll();

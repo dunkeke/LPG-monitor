@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LPG 套利监控与跟盘 App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <div>
+          <h1>LPG 套利监控与跟盘 App</h1>
+          <p>本地计算 + 信号监控：输入行情后实时给出 PG/PP 套利区间、跟盘建议与预警。</p>
+        </div>
+        <div class="hero-badges">
+          <span class="badge badge-info">纯前端运行</span>
+          <span class="badge badge-info">适配 GitHub Pages</span>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>监控参数</h2>
+        <div class="grid">
+          <label class="field">
+            <span>PG 套利预警阈值（¥/t）</span>
+            <input id="pgThreshold" type="number" value="500" />
+          </label>
+          <label class="field">
+            <span>PP 套利预警阈值（¥/t）</span>
+            <input id="ppThreshold" type="number" value="800" />
+          </label>
+          <label class="field">
+            <span>自动刷新（秒）</span>
+            <input id="refreshSeconds" type="number" value="0" />
+          </label>
+          <button id="toggleAuto" class="secondary">启用自动监控</button>
+        </div>
+        <p class="hint">阈值用于触发“套利机会”信号；自动刷新=0 表示关闭。</p>
+      </section>
+
+      <section class="card">
+        <h2>行情输入（JSON 数组）</h2>
+        <p class="hint">字段：month, PG, FEI, CP, FX, PP</p>
+        <textarea id="inputData" rows="10"></textarea>
+        <div class="actions">
+          <button id="calcPg">刷新 PG 监控</button>
+          <button id="calcPp">刷新 PP 监控</button>
+          <button id="calcAll" class="secondary">一键刷新全部</button>
+        </div>
+        <p id="status" class="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>监控总览</h2>
+        <div id="summary" class="summary"></div>
+      </section>
+
+      <section class="card">
+        <h2>PG 监控结果</h2>
+        <div class="table-wrap">
+          <table id="pgTable">
+            <thead>
+              <tr>
+                <th>月份</th>
+                <th>PG/FEI 价差 (USD/t)</th>
+                <th>PG/FEI 套利 (¥/t)</th>
+                <th>监控信号</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>PP 监控结果</h2>
+        <div class="table-wrap">
+          <table id="ppTable">
+            <thead>
+              <tr>
+                <th>月份</th>
+                <th>PP/CP 价差 (USD/t)</th>
+                <th>PP/CP 套利 (¥/t)</th>
+                <th>PP/FEI 价差 (USD/t)</th>
+                <th>PP/FEI 套利 (¥/t)</th>
+                <th>监控信号</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

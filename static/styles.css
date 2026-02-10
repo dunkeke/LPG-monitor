@@ -1,20 +1,24 @@
 :root {
   color-scheme: light;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Comic Neue", "Nunito", "Segoe UI", "PingFang SC", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #f5f7fb;
-  color: #1f2937;
+  background: #f8f3e6;
+  color: #3b3a36;
 }
 
 .container {
-  max-width: 1080px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 28px 20px 40px;
   display: grid;
-  gap: 16px;
+  gap: 18px;
 }
 
 .hero {
@@ -23,6 +27,19 @@ body {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  padding: 18px 20px;
+  background: #d6e4ff;
+  border: 2px solid #7a93c9;
+  border-radius: 18px;
+  box-shadow: 0 6px 0 #7a93c9;
+}
+
+.hero h1 {
+  font-size: 26px;
+}
+
+.hero p {
+  margin: 6px 0 0;
 }
 
 .hero-badges {
@@ -31,34 +48,57 @@ body {
 }
 
 .badge {
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
-}
-
-.badge-info {
-  background: #e0f2fe;
-  color: #0369a1;
+  font-weight: 700;
+  border: 1px dashed #5f6d87;
+  background: #fef7e7;
+  color: #5b5b56;
 }
 
 .card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: #fffaf0;
+  border-radius: 18px;
+  padding: 18px 18px 20px;
+  border: 2px solid #d8c9aa;
+  box-shadow: 0 5px 0 #d8c9aa;
+  position: relative;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  width: 80px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed #9e9e9e;
+  border-radius: 6px;
+  transform: rotate(-4deg);
 }
 
 h1, h2 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
+}
+
+h2 {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #fde2d5;
+  border: 1px solid #e6bfa8;
+  font-size: 18px;
 }
 
 textarea {
   width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 10px;
+  border: 2px solid #d8c9aa;
+  border-radius: 12px;
+  padding: 12px;
   font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  background: #fffdf8;
 }
 
 .actions {
@@ -69,30 +109,33 @@ textarea {
 }
 
 button {
-  border: 0;
-  background: #2563eb;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 8px;
+  border: 2px solid #8aa5c7;
+  background: #b7d3f2;
+  color: #274168;
+  padding: 10px 18px;
+  border-radius: 14px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 3px 0 #8aa5c7;
 }
 
 button:hover {
-  background: #1d4ed8;
+  background: #a6c6ea;
 }
 
 button.secondary {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #f7d8e1;
+  border-color: #dca4b5;
+  color: #7b4355;
+  box-shadow: 0 3px 0 #dca4b5;
 }
 
 button.secondary:hover {
-  background: #cbd5f5;
+  background: #f0c8d4;
 }
 
 .hint, .status {
-  color: #6b7280;
+  color: #6c6356;
   font-size: 14px;
 }
 
@@ -102,23 +145,29 @@ button.secondary:hover {
 
 .table-wrap {
   overflow-x: auto;
+  margin-top: 6px;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fffdf8;
+  border: 2px solid #e6d7bf;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 th, td {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px dashed #e6d7bf;
   text-align: left;
-  padding: 8px;
+  padding: 10px 12px;
   white-space: nowrap;
 }
 
 th {
-  background: #f9fafb;
-  font-weight: 600;
+  background: #f2efe7;
+  font-weight: 700;
 }
 
 .grid {
@@ -135,9 +184,10 @@ th {
 }
 
 .field input {
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 8px;
+  border: 2px solid #d8c9aa;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #fffdf8;
 }
 
 .summary {
@@ -147,16 +197,18 @@ th {
 }
 
 .summary-card {
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 12px;
-  background: #f8fafc;
+  background: #f0f8ff;
+  border: 2px solid #bfd8ef;
+  box-shadow: 0 4px 0 #bfd8ef;
   display: grid;
   gap: 6px;
 }
 
 .summary-card strong {
   font-size: 14px;
-  color: #475569;
+  color: #3f5c73;
 }
 
 .summary-card span {
@@ -165,27 +217,31 @@ th {
 }
 
 .summary-card small {
-  color: #94a3b8;
+  color: #7b8ea3;
 }
 
 .signal {
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  border: 1px dashed transparent;
 }
 
 .signal-good {
-  background: #dcfce7;
-  color: #166534;
+  background: #ddf5d8;
+  color: #2f6a2c;
+  border-color: #9ed39a;
 }
 
 .signal-warn {
-  background: #fee2e2;
-  color: #991b1b;
+  background: #ffe1e1;
+  color: #8a2f2f;
+  border-color: #f3b2b2;
 }
 
 .signal-neutral {
-  background: #e2e8f0;
-  color: #475569;
+  background: #ece7ff;
+  color: #4d4b6b;
+  border-color: #c9c3e9;
 }

@@ -245,3 +245,29 @@ th {
   color: #4d4b6b;
   border-color: #c9c3e9;
 }
+
+
+.input-mode {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 12px;
+  font-size: 14px;
+}
+
+.input-mode label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hidden {
+  display: none;
+}
+
+.manual-cell-input {
+  width: 100%;
+  border: 1px solid #d8c9aa;
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #fffdf8;
+}

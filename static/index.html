@@ -40,9 +40,39 @@
       </section>
 
       <section class="card">
-        <h2>行情输入（JSON 数组）</h2>
-        <p class="hint">字段：month, PG, FEI, CP, FX, PP</p>
-        <textarea id="inputData" rows="10"></textarea>
+        <h2>行情输入</h2>
+        <div class="input-mode">
+          <label><input type="radio" name="inputMode" value="json" checked /> JSON 数组</label>
+          <label><input type="radio" name="inputMode" value="manual" /> 手动录入</label>
+        </div>
+
+        <div id="jsonInputPanel">
+          <p class="hint">字段：month, PG, FEI, CP, FX, PP</p>
+          <textarea id="inputData" rows="10"></textarea>
+        </div>
+
+        <div id="manualInputPanel" class="hidden">
+          <p class="hint">手动输入每个月份行情；空行会自动忽略。</p>
+          <div class="table-wrap">
+            <table id="manualInputTable">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>PG</th>
+                  <th>FEI</th>
+                  <th>CP</th>
+                  <th>FX</th>
+                  <th>PP</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="actions">
+            <button id="addManualRow" type="button" class="secondary">新增一行</button>
+          </div>
+        </div>
+
         <div class="actions">
           <button id="calcPg">刷新 PG 监控</button>
           <button id="calcPp">刷新 PP 监控</button>
@@ -64,6 +94,7 @@
               <tr>
                 <th>月份</th>
                 <th>PG/FEI 价差 (USD/t)</th>
+                <th>PG/CP 价差 (USD/t)</th>
                 <th>PG/FEI 套利 (¥/t)</th>
                 <th>监控信号</th>
               </tr>

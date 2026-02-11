@@ -39,11 +39,12 @@ def compute_pg_arbitrage(data: PGData) -> dict:
     """Compute PG/FEI difference and arbitrage in USD and RMB terms."""
 
     diff_usd = data.PG / data.FX - data.FEI
-    fei_cny = data.FEI * data.FX
-    arb_cny = (data.PG - fei_cny) * 1.11 * 1.09
+    cp_diff_usd = data.PG / data.FX - data.CP
+    arb_cny = data.PG - data.FEI * data.FX * 1.11 * 1.09
     return {
         "month": data.month,
         "pg_fei_diff_usd": round(diff_usd, 2),
+        "pg_cp_diff_usd": round(cp_diff_usd, 2),
         "pg_fei_arb": round(arb_cny, 2),
     }
 
@@ -53,11 +54,11 @@ def compute_pp_arbitrage(data: PPData, blpg1: float = 77.0, factor: float = 1500
 
     cp_cost = data.CP + blpg1
     pp_cp_diff = data.PP / data.FX - cp_cost
-    pp_cp_arb = (data.PP - cp_cost * data.FX) * 1.01 * 1.09 - factor
+    pp_cp_arb = data.PP - cp_cost * data.FX * 1.01 * 1.09 * 1.18 - factor
 
     fei_cost = data.FEI
     pp_fei_diff = data.PP / data.FX - fei_cost
-    pp_fei_arb = (data.PP - fei_cost * data.FX) * 1.11 * 1.09 * 1.18 - factor
+    pp_fei_arb = data.PP - fei_cost * data.FX * 1.11 * 1.09 * 1.18 - factor
 
     return {
         "month": data.month,

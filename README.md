@@ -11,6 +11,7 @@
 
 当前 `static/index.html + static/app.js + static/styles.css` 已可独立运行，
 计算逻辑在浏览器内完成，不依赖后端接口。
+并且支持两种行情录入：`JSON 数组` 与 `手动表格录入`（可切换）。
 
 ### 操作步骤
 
@@ -50,6 +51,25 @@
 
 ---
 
+
+## 4) 当前内外盘计算口径（与看板一致）
+
+- **PG/FEI 价差 (USD/t)**：`PG / FX - FEI`
+- **PG/CP 价差 (USD/t)**：`PG / FX - CP`
+- **PG/FEI 套利 (¥/t)**：`PG - FEI * FX * 1.11 * 1.09`
+
+- **PP/CP 价差 (USD/t)**：`PP / FX - (CP + BLPG1)`
+- **PP/CP 套利 (¥/t)**：`PP - (CP + BLPG1) * FX * 1.01 * 1.09 * 1.18 - 1500`
+- **PP/FEI 价差 (USD/t)**：`PP / FX - FEI`
+- **PP/FEI 套利 (¥/t)**：`PP - FEI * FX * 1.11 * 1.09 * 1.18 - 1500`
+
+其中默认 `BLPG1 = 77`。
+
+盯盘信号会结合内外盘：
+- PG：优先看 `PG/FEI ARB` 是否越过阈值，再用 `PG/FEI` 与 `PG/CP` 两个价差同向/分化做二次判断。
+- PP：同时判断 `PP/CP ARB` 与 `PP/FEI ARB`，双边同向给出更强信号，分化时提示“内外盘分化”。
+
+---
 ## 本地预览纯前端版
 
 ```bash
